@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The LitVoice Blogs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+        
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #ccc;
+        }
+        
+        .header img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        
+        .blog-grid {
+            display: grid;
+            gap: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        
+        .blog-card {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .blog-card img, .blog-card video {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div style="font-size: 50px;">📖</div>
+            <h2>The LitVoice Blogs</h2>
+            <a href="admin.html">Admin Panel</a>
+        </div>
+        
+        <div class="blog-grid" id="blogContainer">
+            <!-- Blog posts will load here -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const storedBlogs = localStorage.getItem("blogs");
+            const blogs = storedBlogs ? JSON.parse(storedBlogs) : [];
+            const container = document.getElementById("blogContainer");
+
+            blogs.forEach(blog => {
+                const blogCard = document.createElement("div");
+                blogCard.classList.add("blog-card");
+                
+                if (blog.type === "image") {
+                    const img = document.createElement("img");
+                    img.src = blog.content;
+                    img.alt = blog.title;
+                    img.onerror = function() {
+                        this.outerHTML = '<div style="font-size:50px;">📄</div>';
+                    };
+                    blogCard.appendChild(img);
+                } else if (blog.type === "video") {
+                    const video = document.createElement("video");
+                    video.src = blog.content;
+                    video.controls = true;
+                    blogCard.appendChild(video);
+                } else {
+                    const text = document.createElement("p");
+                    text.textContent = blog.content;
+                    blogCard.appendChild(text);
+                }
+                
+                const title = document.createElement("h2");
+                title.textContent = blog.title;
+                blogCard.appendChild(title);
+                
+                container.appendChild(blogCard);
+            });
+        });
+    </script>
+</body>
+</html>

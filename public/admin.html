@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Upload Blogs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+        .container {
+            width: 50%;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        input, textarea, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Upload Blog</h2>
+        <input type="text" id="blogTitle" placeholder="Blog Title" required>
+        <select id="blogType">
+            <option value="text">Text</option>
+            <option value="image">Image</option>
+            <option value="video">Video</option>
+        </select>
+        <textarea id="blogContent" placeholder="Enter text, emoji, or URL for image/video"></textarea>
+        <button onclick="uploadBlog()">Upload</button>
+        <a href="index.html">Go to Blogs</a>
+    </div>
+
+    <script>
+        function uploadBlog() {
+            const title = document.getElementById("blogTitle").value;
+            const type = document.getElementById("blogType").value;
+            const content = document.getElementById("blogContent").value;
+            
+            if (!title || !content) {
+                alert("Please fill out all fields.");
+                return;
+            }
+            
+            const newBlog = { title, type, content };
+            let blogs = localStorage.getItem("blogs");
+            blogs = blogs ? JSON.parse(blogs) : [];
+            blogs.push(newBlog);
+            localStorage.setItem("blogs", JSON.stringify(blogs));
+            alert("Blog uploaded successfully!");
+        }
+    </script>
+</body>
+</html>

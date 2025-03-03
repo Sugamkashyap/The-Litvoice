@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>Esigned - Blog Upload</title>
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="css/style.css" rel="stylesheet" />
+</head>
+<body>
+  <div class="container mt-5">
+    <h2 class="text-center">Upload Your Blog</h2>
+    <form id="blogForm" class="mb-4">
+      <div class="form-group">
+        <label>Title</label>
+        <input type="text" id="title" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label>Content</label>
+        <textarea id="content" class="form-control" rows="4" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Upload Blog</button>
+    </form>
+    
+    <h3 class="text-center">Recent Blogs</h3>
+    <div id="blogContainer" class="row">
+      <!-- Blog posts will appear here -->
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("blogForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      let title = document.getElementById("title").value;
+      let content = document.getElementById("content").value;
+      
+      let blogPost = { title, content, date: new Date().toLocaleDateString() };
+      let blogs = JSON.parse(localStorage.getItem("blogs")) || [];
+      blogs.unshift(blogPost);
+      localStorage.setItem("blogs", JSON.stringify(blogs));
+      displayBlogs();
+      this.reset();
+    });
+
+    function displayBlogs() {
+      let blogs = JSON.parse(localStorage.getItem("blogs")) || [];
+      let container = document.getElementById("blogContainer");
+      container.innerHTML = "";
+      blogs.forEach(blog => {
+        let card = `<div class="col-md-4">
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title">${blog.title}</h5>
+              <p class="card-text">${blog.content.substring(0, 100)}...</p>
+              <small class="text-muted">${blog.date}</small>
+            </div>
+          </div>
+        </div>`;
+        container.innerHTML += card;
+      });
+    }
+
+    displayBlogs();
+  </script>
+</body>
+</html>
